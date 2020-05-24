@@ -14,7 +14,6 @@ d3.json("data/triangles.json")
         .attr("height", height + margin.top + margin.bottom)
 
     let drawTriangles = (dataset) => {
-      console.log(dataset)
       let triangleGroups = svg.selectAll('.triangle').data(dataset)
 
       // enter
@@ -36,7 +35,8 @@ d3.json("data/triangles.json")
         .attr('stroke', lineStroke)
         .attr('stroke-width', lineWidth)
         .attr('stroke-linecap', "round")
-        .on('click', sideClick)
+        .on("contextmenu", sideClickRight)
+        .on('click', sideClickLeft)
 
       triangleGroupsEnter.append('line')
         .attr('class', 'base')
@@ -47,7 +47,8 @@ d3.json("data/triangles.json")
         .attr('stroke', lineStroke)
         .attr('stroke-width', lineWidth)
         .attr('stroke-linecap', "round")
-        .on('click', baseClick)
+        .on("contextmenu", baseClickRight)
+        .on('click', baseClickLeft)
 
       triangleGroupsEnter.append('line')
         .attr('class', 'left_side')
@@ -58,7 +59,8 @@ d3.json("data/triangles.json")
         .attr('stroke', lineStroke)
         .attr('stroke-width', lineWidth)
         .attr('stroke-linecap', "round")
-        .on('click', sideClick)
+        .on("contextmenu", sideClickRight)
+        .on('click', sideClickLeft)
 
       // update
 
@@ -96,7 +98,7 @@ d3.json("data/triangles.json")
       triangleGroups.exit().remove()
     }
 
-    let baseClick = d => {
+    let baseClickLeft = d => {
       dataset = dataset.map(element => {
         return {
           'horizontal_position': element.horizontal_position,
@@ -109,13 +111,41 @@ d3.json("data/triangles.json")
       drawTriangles(dataset)
     }
 
-    let sideClick = d => {
+    let sideClickLeft = d => {
       dataset = dataset.map(element => {
         return {
           'horizontal_position': element.horizontal_position,
           "vertical_position": element.sides_length,
           "base_length": element.base_length,
           "sides_length": element.vertical_position,
+          "hue": element.hue
+        }
+      })
+      drawTriangles(dataset)
+    }
+
+    let baseClickRight = d => {
+      d3.event.preventDefault()
+      dataset = dataset.map(element => {
+        return {
+          'horizontal_position': element.base_length,
+          "vertical_position": element.vertical_position,
+          "base_length": element.horizontal_position,
+          "sides_length": element.sides_length,
+          "hue": element.hue
+        }
+      })
+      drawTriangles(dataset)
+    }
+
+    let sideClickRight = d => {
+      d3.event.preventDefault()
+      dataset = dataset.map(element => {
+        return {
+          'horizontal_position': element.sides_length,
+          "vertical_position": element.vertical_position,
+          "base_length": element.base_length,
+          "sides_length": element.horizontal_position,
           "hue": element.hue
         }
       })
