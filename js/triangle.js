@@ -87,6 +87,21 @@ d3.json('data/triangles.json')
       triangleGroups.exit().remove()
     }
 
+    let trianglePath = element => {
+      let height = triangleHeight(element.sides_length, element.base_length)
+      let topX = element.horizontal_position, topY = element.vertical_position
+      let downRightX = topX + element.base_length / 2, downRightY = topY + height
+      let downLeftX = downRightX - element.base_length, downLeftY = topY + height
+      return 'M ' + topX + ' ' + topY + ' L ' + downRightX + ' ' + downRightY + ' L ' + downLeftX + ' ' + downLeftY + ' L ' + topX + ' ' + topY
+    }
+
+    let topX = element => element.horizontal_position
+    let topY = element => element.vertical_position
+    let downRightX = element => topX(element) + element.base_length / 2
+    let downRightY = element => topY(element) + triangleHeight(element.sides_length, element.base_length)
+    let downLeftX = element => downRightX(element) - element.base_length
+    let downLeftY = element => downRightY(element)
+    let triangleHeight = (sides_length, base_length) => Math.sqrt(Math.pow(sides_length, 2) - Math.pow(base_length / 2, 2))
     let pathColor = element => `hsl(${element.hue}, 100%, 50%)`
 
     let pathClickLeft = () => {
@@ -129,19 +144,6 @@ d3.json('data/triangles.json')
       drawTriangles(dataset)
     }
 
-    let sideClickLeft = () => {
-      dataset = dataset.map(element => {
-        return {
-          'horizontal_position': element.horizontal_position,
-          'vertical_position': element.sides_length,
-          'base_length': element.base_length,
-          'sides_length': element.vertical_position,
-          'hue': element.hue
-        }
-      })
-      drawTriangles(dataset)
-    }
-
     let baseClickRight = () => {
       d3.event.preventDefault()
       dataset = dataset.map(element => {
@@ -150,6 +152,19 @@ d3.json('data/triangles.json')
           'vertical_position': element.vertical_position,
           'base_length': element.horizontal_position,
           'sides_length': element.sides_length,
+          'hue': element.hue
+        }
+      })
+      drawTriangles(dataset)
+    }
+
+    let sideClickLeft = () => {
+      dataset = dataset.map(element => {
+        return {
+          'horizontal_position': element.horizontal_position,
+          'vertical_position': element.sides_length,
+          'base_length': element.base_length,
+          'sides_length': element.vertical_position,
           'hue': element.hue
         }
       })
@@ -169,23 +184,6 @@ d3.json('data/triangles.json')
       })
       drawTriangles(dataset)
     }
-
-    let trianglePath = element => {
-      let height = triangleHeight(element.sides_length, element.base_length)
-      let topX = element.horizontal_position, topY = element.vertical_position
-      let downRightX = topX + element.base_length / 2, downRightY = topY + height
-      let downLeftX = downRightX - element.base_length, downLeftY = topY + height
-
-      return 'M ' + topX + ' ' + topY + ' L ' + downRightX + ' ' + downRightY + ' L ' + downLeftX + ' ' + downLeftY + ' L ' + topX + ' ' + topY
-    }
-
-    let topX = element => element.horizontal_position
-    let topY = element => element.vertical_position
-    let downRightX = element => topX(element) + element.base_length / 2
-    let downRightY = element => topY(element) + triangleHeight(element.sides_length, element.base_length)
-    let downLeftX = element => downRightX(element) - element.base_length
-    let downLeftY = element => downRightY(element)
-    let triangleHeight = (sides_length, base_length) => Math.sqrt(Math.pow(sides_length, 2) - Math.pow(base_length / 2, 2))
 
     let svg = createSvg()
     drawTriangles(dataset)
