@@ -88,11 +88,10 @@ d3.json('data/triangles.json')
     }
 
     let trianglePath = element => {
-      let height = triangleHeight(element.sides_length, element.base_length)
-      let topX = element.horizontal_position, topY = element.vertical_position
-      let downRightX = topX + element.base_length / 2, downRightY = topY + height
-      let downLeftX = downRightX - element.base_length, downLeftY = topY + height
-      return 'M ' + topX + ' ' + topY + ' L ' + downRightX + ' ' + downRightY + ' L ' + downLeftX + ' ' + downLeftY + ' L ' + topX + ' ' + topY
+      let TopX = topX(element), TopY = topY(element)
+      let DownRightX = downRightX(element), DownRightY = downRightY(element)
+      let DownLeftX = downLeftX(element), DownLeftY = downLeftY(element)
+      return 'M ' + TopX + ' ' + TopY + ' L ' + DownRightX + ' ' + DownRightY + ' L ' + DownLeftX + ' ' + DownLeftY + ' L ' + TopX + ' ' + TopY
     }
 
     let topX = element => element.horizontal_position

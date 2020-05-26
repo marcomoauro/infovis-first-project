@@ -15,7 +15,7 @@ To run the project in a local environment run this script:
 Exercise:  
 Create a JSON file with multivariate data: there are 10 data-point and 
 each data-point have five quantitative variables wich the values are all positives.
-With these data drow 10 isosceles triangle into drawing area (each triangle corresponds at one data-point).
+With these data draw 10 isosceles triangles into drawing area (each triangle corresponds at one data-point).
 First variable determine the horizontal position of the triangle, the second variable determine the vertical
 position, third variable determine the base length, fourth variable determines the lenght of the others two sides
 and the fifth variable determina the hue of the fill.
